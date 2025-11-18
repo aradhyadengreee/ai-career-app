@@ -1,11 +1,11 @@
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
 import pandas as pd
 import uuid
-import os
 import time
 from typing import List, Dict
 from config import Config
 from vector_db import CareerVectorDB
+import os
 
 app = Flask(__name__)
 app.config.from_object(Config)
