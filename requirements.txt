@@ -1,0 +1,9 @@
+Flask
+pandas
+chromadb
+sentence-transformers
+openpyxl
+numpy
+python-dotenv
+gunicorn
+Werkzeug
