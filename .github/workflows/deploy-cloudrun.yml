@@ -31,7 +31,7 @@ jobs:
           docker build -t "$IMAGE" .
           docker push "$IMAGE"
           echo "IMAGE=$IMAGE" >> $GITHUB_ENV
-      
+
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
         with:
@@ -44,11 +44,12 @@ jobs:
 
       - name: Deploy to Cloud Run
         run: |
-          gcloud config set project ${{ env.PROJECT_ID }}
           gcloud run deploy ${{ env.SERVICE_NAME }} \
-            --image $IMAGE \
+            --image ${IMAGE} \
             --region ${{ env.REGION }} \
             --platform managed \
             --allow-unauthenticated \
             --port 8080 \
-            --memory 1024Mi
+            --memory 2Gi \
+            --timeout 300s \
+            --min-instances=0
