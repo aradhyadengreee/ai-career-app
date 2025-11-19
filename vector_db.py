@@ -456,3 +456,44 @@ class CareerVectorDB:
             }
         except Exception as e:
             return {"error": str(e)}
+        
+# --- Append this to the BOTTOM of vector_db.py ---
+
+import traceback
+from typing import Optional
+
+def create_vector_db(data_path: Optional[str] = "/app/careers_data.xlsx",
+                     chroma_dir: Optional[str] = "/app/chroma-db"):
+    """
+    Build and persist the Chroma vector DB using the existing CareerVectorDB class.
+
+    This function is intentionally simple: it instantiates CareerVectorDB with
+    the provided excel path and persist directory so the embedding model and
+    Chroma store are downloaded/created at image-build time.
+    """
+    try:
+        logger.info(f"create_vector_db: starting with data_path={data_path} chroma_dir={chroma_dir}")
+        # Instantiate class which will load model, initialize chroma, and index data
+        db = CareerVectorDB(excel_file_path=data_path, persist_directory=chroma_dir)
+        logger.info("create_vector_db: finished successfully")
+        # return the object in case callers want to inspect it
+        return db
+    except Exception as e:
+        logger.error("create_vector_db: failed to create/persist vector DB")
+        logger.error(traceback.format_exc())
+        # re-raise to ensure build fails loudly if something went wrong
+        raise
+
+if __name__ == "__main__":
+    # Allow running this file directly for local testing:
+    #   python vector_db.py /path/to/careers_data.xlsx /path/to/chroma_dir
+    import sys
+    data_arg = "/app/careers_data.xlsx"
+    chroma_arg = "/app/chroma-db"
+    if len(sys.argv) >= 2:
+        data_arg = sys.argv[1]
+    if len(sys.argv) >= 3:
+        chroma_arg = sys.argv[2]
+
+    print(f"Running create_vector_db with data_path={data_arg} chroma_dir={chroma_arg}")
+    create_vector_db(data_arg, chroma_arg)
