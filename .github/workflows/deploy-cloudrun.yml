@@ -50,5 +50,5 @@ jobs:
             --region ${{ env.REGION }} \
             --platform managed \
             --allow-unauthenticated \
-            --port 5000
+            --port 5000 \
             --memory 1Gi
