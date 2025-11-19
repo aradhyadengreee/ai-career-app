@@ -51,3 +51,4 @@ jobs:
             --platform managed \
             --allow-unauthenticated \
             --port 5000
+            --memory 1Gi
